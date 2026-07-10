@@ -3,7 +3,24 @@
 A reusable skill that documents any finished program, app, feature, or toolkit by producing a
 matched pair of guides, the same way every time.
 
-Version: 1.5.0 (hardened 2026-07-03; see CHANGELOG.md)
+Version: 1.6.0 (Codex compatibility added 2026-07-10; see CHANGELOG.md)
+
+## Codex edition
+
+An additive Codex-native edition lives at `codex/project-guides`. It preserves the same two-guide
+contract while using Codex skills, native subagents, repository tools, and deterministic local
+validation. It does not require the Claude CLI and does not change the existing root skill.
+
+Ask Codex to install it with:
+
+```text
+Use $skill-installer to install project-guides from
+https://github.com/ojesusmp/project-guides/tree/main/codex/project-guides
+```
+
+After installation, invoke it with `$project-guides`, or ask Codex to document a project, create a
+user guide, or create a developer index. The Codex package contains its own `SKILL.md`, UI metadata,
+authoring specifications, and dependency-free validator.
 
 ## What it makes
 
@@ -39,6 +56,9 @@ output is consistent across projects.
 - `resources/agent-prompts.md` — fill-in-the-blank prompts for both agents and the optional primer.
 - `test/quiz.txt` — regression gate questions (run below).
 - `CHANGELOG.md` — version history and the hardening audit trail.
+
+The independently installable Codex edition and its deterministic tests live in
+`codex/project-guides/`.
 
 ## Regression gate (run after ANY edit to SKILL.md OR the resource specs)
 

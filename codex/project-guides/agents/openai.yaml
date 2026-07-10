@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Guides"
+  short_description: "Create verified user and developer guides"
+  default_prompt: "Use $project-guides to document this project with a visual user guide and a cited developer index."
