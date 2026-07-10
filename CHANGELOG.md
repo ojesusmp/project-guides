@@ -1,5 +1,26 @@
 # Changelog — project-guides
 
+## 1.6.0 - 2026-07-10 (Codex-native edition)
+
+Added an independently installable skill under `codex/project-guides` for Codex users. The new
+edition uses Codex-native subagent and tool routing, inherits the active session model instead of
+hardcoding model names, respects Plan Mode and governing `AGENTS.md` instructions, and has no
+Claude CLI dependency. The existing root Claude skill is unchanged.
+
+The Codex package includes progressive-disclosure references for the operator guide, developer
+index, and authoring prompts. A dependency-free Python validator checks skill structure,
+frontmatter, UI metadata, forbidden compatibility dependencies, passive self-contained HTML,
+secret-shaped values, user-specific paths, index structure, and citation paths/line bounds. Unit
+fixtures cover clean HTML, active tags, event handlers, remote assets, secret-shaped values, valid
+citations, and path traversal. GitHub Actions runs these gates on pushes and pull requests.
+
+Release hardening added same-directory staging and atomic promotion so existing guides remain
+untouched until replacements pass source, validator, and render checks. Fingerprints now include a
+deterministic SHA-256 over ordered relative paths and source bytes, preventing equal-size edits from
+appearing current. The HTML gate also rejects active navigation/submission constructs and external
+resource-bearing attributes. CI actions are pinned to reviewed commit SHAs and checkout credentials
+are not persisted.
+
 ## 1.5.0 — 2026-07-03 (feature: staleness fingerprint)
 
 Added the staleness fingerprint (Cortex's Round-1 background proposal, approved by the user after
