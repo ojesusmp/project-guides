@@ -17,9 +17,10 @@ guides against the code, render the infographic to confirm it is right, then han
 2. **Developer index** — an exhaustive Markdown technical reference. Audience: anyone modifying or
    rebuilding the program, including a future AI session with no context. Section spec:
    `resources/developer-index-spec.md`.
-3. **AI context primer (optional, recommended for future-session work)** — a one-page fast
-   orientation. Produce it when the user wants quick future-session onboarding, not a full rebuild
-   reference. Spec lives at the bottom of `resources/agent-prompts.md`.
+3. **AI context primer (optional)** — a one-page fast orientation. **Boundary with faro:** if the
+   project uses faro (a maintained `PROJECT.md`), that IS the standing orientation one-pager — do not
+   also produce a primer; point to `PROJECT.md`. Produce this primer only for a project NOT using faro,
+   as a one-off onboarding snapshot. Spec lives at the bottom of `resources/agent-prompts.md`.
 
 ## When to use
 
@@ -44,12 +45,18 @@ names concrete model aliases too; it is the only other spot, and it says so ther
 
 | Role | Capability required | Current mapping |
 |---|---|---|
-| Agent A (guide author) | polished self-contained HTML/CSS in plain voice | general-purpose agent, mid tier or better |
+| Agent A (guide author) | polished self-contained HTML/CSS in plain voice, with real design taste | mid-tier general-purpose agent by default; route the design/taste phase to the frontier design tier (e.g. an artisan-style Fable agent) when taste-phase routing is authorized (model-effort-router) |
 | Agent B (index author) | exhaustive, accurate technical writing | strongest routinely-delegated tier (route via model-effort-router if installed) |
 | Verifier | read-only; did NOT author the doc being checked | any read-only agent (alfred on this machine) |
 
 Scale to the project: a small single-file tool does not need the strongest tier — one mid-tier
 agent may author both guides, and verification scales down with it (see step 2).
+
+The user guide is a design artifact, and its look is the one place the frontier design tier earns
+its cost, so that is the one place to spend it: route the guide's design/taste pass there when
+taste-phase routing is authorized, and keep the developer index and all verification at mid tier or
+below. The design rules it must follow are in the "Design direction" section of
+`resources/user-guide-spec.md`.
 
 ## Security rules (non-negotiable; paste into every authoring prompt)
 
@@ -211,9 +218,16 @@ guarantee. PowerShell equivalent: `Select-String` with the same pattern.
   `%LocalAppData%\Google\Chrome\Application\chrome.exe`). macOS/Linux: `chromium`, `chrome`, or
   `google-chrome`. Only after all of these miss do you take the no-browser path in step 3.
 - Command shape: `<browser> --headless=new --disable-gpu --hide-scrollbars
-  --screenshot="<out>.png" --window-size=1300,<height> "file:///<html-path>"`. Start at height
-  5200; re-render taller or in segments per step 3. Older builds may only accept `--headless`;
-  use whichever flag the installed build accepts.
+  --force-prefers-reduced-motion --screenshot="<out>.png" --window-size=1300,<height>
+  "file:///<html-path>"`. Start at height 5200; re-render taller or in segments per step 3. Older
+  builds may only accept `--headless`; use whichever flag the installed build accepts.
+- `--force-prefers-reduced-motion` is not optional. The guide's page-load reveal, when it has one,
+  starts its elements at `opacity:0`; without forcing reduced-motion the headless capture lands on the
+  pre-animation frame and everything below the first element screenshots BLANK, which reads as a
+  broken render when the page is actually fine. Forcing the flag resolves the reveal to its final
+  visible state (and incidentally confirms the reduced-motion fallback). If a build does not accept
+  the flag, capture may be blank below the fold: fall back to verifying the HTML text per step 3
+  and note it, rather than certifying a blank render clean.
 - Paths and shell safety: write the PNG to a simple path with no spaces, `$`, or parentheses (the
   session scratchpad is safe), then move it. For the input URL, the real defense is to fully
   percent-encode the HTML path: backslashes become `/`, keep the drive colon (`file:///C:/...`),
@@ -246,8 +260,8 @@ a gate is not.
 
 ## Optional extra artifacts (advice to offer)
 
-- **AI context primer** (recommended when future sessions will continue the work): one page, what
-  the project is, where things live, how to run it, the next steps, and links to the two guides.
+- **AI context primer** (only when the project does NOT use faro; otherwise faro's `PROJECT.md` owns
+  this standing role): one page, what the project is, where things live, how to run it, next steps, links to the two guides.
 - **Quickstart cheat-sheet**: one page, only the daily-driver actions. Good for a tool the user
   operates often.
 - **CHANGELOG**: only for a project that will keep evolving.

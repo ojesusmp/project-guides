@@ -1,5 +1,42 @@
 # Changelog — project-guides
 
+## 1.7.0 — 2026-07-15 (design pass: real art direction for the user guide, via a Fable taste phase)
+
+The user guide's visual spec was one thin line ("colored section cards ... clean, modern,
+readable") that produced generic, forgettable infographics. Replaced it with a real design
+discipline and wired the taste phase to the frontier design tier, in BOTH the root Claude skill and
+the Codex edition so the two invocation paths stay in step:
+
+- New "Design direction" section in `resources/user-guide-spec.md` (and a compact mirror in
+  `codex/project-guides/references/user-guide-spec.md`): commit to a project-derived direction
+  stated as a short DIRECTION note (atmosphere, palette, type, one radius, one timing, restraint);
+  distinctive typography from SYSTEM-font stacks only (the guide is offline, so no web fonts) with
+  the display face never left as Inter/Roboto/Arial/Helvetica/system-ui; a committed `:root` palette
+  clearing WCAG AA with no hex outside `:root`; one border-radius and one timing token; at most one
+  CSS-only page-load reveal that must resolve to full visibility under prefers-reduced-motion; a
+  required print block. Ships a proven default "field manual" token set (toned paper, dense ink, one
+  signal accent, DIN-like display, book serif, mono) to use or adapt.
+- Agent roles (SKILL.md) route the guide's design/taste pass to the frontier design tier (an
+  artisan-style Fable agent) when taste-phase routing is authorized (model-effort-router); the
+  developer index and all verification stay mid tier or below, because the look is the one place
+  the frontier tier earns its cost. Both authoring prompts (`resources/agent-prompts.md` and the
+  Codex `references/authoring-prompts.md`) carry the DIRECTION-first design-content rules
+  (typography, palette, one radius, one timing, the reduced-motion reveal) so the authoring agent
+  follows them whichever tier runs it.
+- Render fix (SKILL.md): the headless screenshot command now passes
+  `--force-prefers-reduced-motion`. Surfaced by dogfooding this release: the new page-load reveal
+  starts elements at `opacity:0`, so a plain headless capture landed on the pre-animation frame and
+  everything below the masthead screenshotted BLANK, which reads as a broken render when the page is
+  fine. Forcing reduced-motion resolves the reveal to its final state and confirms the fallback.
+- Regression quiz: new Q17 (design direction / typography) and Q18 (render + reduced-motion), with
+  expected answers in the README.
+
+The direction was designed by a Fable taste-phase agent (the project's own recommended pipeline:
+Opus orchestrates, Fable produces the design kernel), rendered and eyeballed, and every hard
+constraint (offline, no active content, no hex outside `:root`, one radius, one timing, AA
+contrast, voice rules) was mechanically verified before adoption. Regression gate 18/18 on two model
+tiers; independent fresh-eyes review clean.
+
 ## 1.6.0 - 2026-07-10 (Codex-native edition)
 
 Added an independently installable skill under `codex/project-guides` for Codex users. The new

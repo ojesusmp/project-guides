@@ -3,7 +3,7 @@
 A reusable skill that documents any finished program, app, feature, or toolkit by producing a
 matched pair of guides, the same way every time.
 
-Version: 1.6.0 (Codex compatibility added 2026-07-10; see CHANGELOG.md)
+Version: 1.7.0 (design pass 2026-07-15; see CHANGELOG.md)
 
 ## Codex edition
 
@@ -100,3 +100,5 @@ this skill outside SKILL.md's roles table; if the lineup changes, update them he
 | 14 | Zero gate matches proves no active content? | No — the gate is a literal filter that misses encoded evasions; it backs up the rule, does not prove compliance |
 | 15 | Existing docs, fingerprint matches, tree clean | No — report the docs are current and ask whether to skip or refresh; never blindly regenerate or delete |
 | 16 | Existing docs predate the feature (no fingerprint) | Treat as "may be stale" — note no usable fingerprint was found and proceed to regenerate |
+| 17 | "Clean, modern, readable" as a design direction | Not sufficient (that is the absence of a direction and produces generic guides); commit to a project-derived direction; typography must use distinctive system-font stacks (no web fonts, the file is offline) and never leave the display face as Inter/Roboto/Arial/Helvetica/system-ui |
+| 18 | Page-load animation starts elements at opacity:0; the render | Force prefers-reduced-motion (`--force-prefers-reduced-motion`) so the reveal resolves to its final visible state; otherwise the headless screenshot catches the pre-animation frame and the page screenshots blank below the fold |

@@ -1,5 +1,5 @@
 === REGRESSION QUIZ ===
-You have just read the full text of the project-guides SKILL.md above. Answer each question below
+You have just read the full text of the project-guides SKILL.md and its resource specs above. Answer each question below
 in one or two sentences, using ONLY the rules in that text. If the text does not answer a
 question, say "NOT COVERED" — do not invent a rule.
 
@@ -19,3 +19,5 @@ question, say "NOT COVERED" — do not invent a rule.
 14. The mechanical text gate returns zero matches on GUIDE.html. Does that prove the file has no active content?
 15. GUIDE.html and DEVELOPER-INDEX.md already exist and their staleness fingerprint matches the project's current git commit, and the working tree is clean. Do you regenerate them?
 16. The existing docs were generated before the fingerprint feature, so they carry no fingerprint at all. What does the step-0 check do?
+17. The user guide spec once said the look should be "clean, modern, readable". Is that a sufficient design direction, and what constraint governs the guide's typography?
+18. The user guide includes one CSS page-load animation that starts its elements at opacity:0. What must the headless render command do about that, and why?

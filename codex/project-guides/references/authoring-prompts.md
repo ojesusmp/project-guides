@@ -8,7 +8,7 @@ Fill placeholders from user/session context and independently verified repositor
 
 ## Guide Author
 
-> Create staged `{OUTPUT_DIR}/.GUIDE.project-guides.tmp.html` for operators of `{PROJECT_NAME}`. Do not write or replace the final `GUIDE.html`. Read every file in `{SOURCE_FILES}` and follow `references/user-guide-spec.md`. Stack: `{STACK}`. Constraints: `{CONSTRAINTS}`. Style reference: `{STYLE_REF}` or none. Embed `<!-- project-guides-fingerprint: {FINGERPRINT} -->`. Produce passive, self-contained HTML with inline CSS, no JavaScript or remote assets. Ground every command, feature, path, output, and limitation in source. Return the staged path, a short source-coverage summary, and any unresolved facts. Own only this artifact.
+> Create staged `{OUTPUT_DIR}/.GUIDE.project-guides.tmp.html` for operators of `{PROJECT_NAME}`. Do not write or replace the final `GUIDE.html`. Read every file in `{SOURCE_FILES}` and follow `references/user-guide-spec.md`, including its Design Direction: commit to a project-derived visual direction before writing markup, distinctive SYSTEM-font typography (no web fonts, the file is offline), a committed `:root` palette clearing WCAG AA, one radius and one timing token, and at most one CSS-only reveal that resolves to full visibility under `prefers-reduced-motion`. Stack: `{STACK}`. Constraints: `{CONSTRAINTS}`. Style reference: `{STYLE_REF}` or none. Embed `<!-- project-guides-fingerprint: {FINGERPRINT} -->`. Produce passive, self-contained HTML with inline CSS, no JavaScript or remote assets. Ground every command, feature, path, output, and limitation in source. Return the staged path, a short source-coverage summary, and any unresolved facts. Own only this artifact.
 
 Append the shared security block verbatim.
 

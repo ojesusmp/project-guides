@@ -43,8 +43,20 @@ Security block — paste into BOTH authoring prompts verbatim:
 > inline CSS (+ inline SVG if useful), colored section cards, numbered steps, at least one simple
 > flow diagram, and a troubleshooting table. No CDN, no JS framework, no external assets, and no
 > active content: no script tags, no inline event handlers, no javascript: URLs. One scrollable
-> page that opens by double-click and looks professional. Match the style of {STYLE_REF} if given
-> and resolvable; otherwise use the default style and note it.
+> page that opens by double-click offline.
+>
+> DESIGN DIRECTION (do this BEFORE writing markup; it is the difference between a real guide and
+> generic slop): commit to a direction derived from what the tool IS, and state it in one short
+> DIRECTION note (atmosphere, palette, type, one radius, one motion timing, what it will NOT do),
+> then build to it. Rules: distinctive typography from SYSTEM-font stacks only (no web fonts, no
+> @import, no font links, because the file is offline and self-contained) with a display face that
+> is never Inter/Roboto/Arial/Helvetica/system-ui; a committed palette as CSS variables in one
+> :root (a tonal ramp plus at most one accent, body-on-background clears WCAG AA 4.5:1, no hex
+> outside :root); exactly one border-radius token and one transition timing token; at most one
+> CSS-only page-load reveal that MUST resolve to full visibility under @media
+> (prefers-reduced-motion: reduce); and a @media print block that flattens to ink-on-white. Match
+> {STYLE_REF} if given and resolvable; otherwise use the "Proven default direction" in the skill's
+> resources/user-guide-spec.md and note it. That spec's Design direction section is authoritative.
 >
 > CONSTRAINTS: {CONSTRAINTS}
 >
