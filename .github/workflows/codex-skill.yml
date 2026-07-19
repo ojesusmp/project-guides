@@ -3,11 +3,17 @@ name: Codex skill validation
 on:
   push:
     paths:
-      - "codex/project-guides/**"
+      - "plugins/project-guides/**"
+      - ".agents/plugins/marketplace.json"
+      - "integrations/codex-cloud/**"
+      - "README.md"
       - ".github/workflows/codex-skill.yml"
   pull_request:
     paths:
-      - "codex/project-guides/**"
+      - "plugins/project-guides/**"
+      - ".agents/plugins/marketplace.json"
+      - "integrations/codex-cloud/**"
+      - "README.md"
       - ".github/workflows/codex-skill.yml"
 
 permissions:
@@ -16,14 +22,28 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python-version }}
+      - name: Check Python syntax
+        run: >-
+          python -m compileall -q
+          plugins/project-guides/skills/project-guides/scripts
+          plugins/project-guides/skills/project-guides/tests
       - name: Validate skill package
-        run: python codex/project-guides/scripts/validate_project_guides.py
-      - name: Run validator fixtures
-        run: python -m unittest discover -s codex/project-guides/tests -v
+        run: python plugins/project-guides/skills/project-guides/scripts/validate_project_guides.py
+      - name: Check cloud script syntax
+        run: bash -n integrations/codex-cloud/setup.sh integrations/codex-cloud/maintenance.sh
+      - name: Run regression suite
+        run: >-
+          python -m unittest discover
+          -s plugins/project-guides/skills/project-guides/tests
+          -v
