@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 import subprocess
 import unittest
 from pathlib import Path
@@ -148,6 +149,32 @@ class RepositoryContractTests(unittest.TestCase):
                 if pattern.search(text):
                     failures.append(f"{path.relative_to(ROOT)}: {label}")
         self.assertEqual([], failures)
+
+    @unittest.skipUnless(shutil.which("bash"), "bash is required for shell syntax checks")
+    def test_cloud_scripts_have_valid_shell_syntax(self) -> None:
+        scripts = [
+            ROOT / "integrations" / "codex-cloud" / "setup.sh",
+            ROOT / "integrations" / "codex-cloud" / "maintenance.sh",
+        ]
+        for script in scripts:
+            self.assertTrue(script.is_file(), f"missing cloud script: {script.relative_to(ROOT)}")
+        result = subprocess.run(
+            ["bash", "-n", *(script.as_posix() for script in scripts)],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+
+    def test_cloud_scripts_avoid_pipe_to_shell_and_unsafe_refs(self) -> None:
+        scripts = [
+            ROOT / "integrations" / "codex-cloud" / "setup.sh",
+            ROOT / "integrations" / "codex-cloud" / "maintenance.sh",
+        ]
+        text = "\n".join(script.read_text(encoding="utf-8") for script in scripts)
+        self.assertNotRegex(text, r"(?:curl|wget)[^\n|]*\|\s*(?:ba)?sh\b")
+        self.assertNotRegex(text, r"git\s+(?:clone|checkout|switch)[^\n]*(?:\bmain\b|\bmaster\b)")
+        self.assertIn("PROJECT_GUIDES_REF", text)
 
 
 if __name__ == "__main__":
