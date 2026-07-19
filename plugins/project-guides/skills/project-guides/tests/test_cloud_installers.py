@@ -116,14 +116,34 @@ class CloudInstallerTests(unittest.TestCase):
     def active_skill(self) -> Path:
         return self.skills / "project-guides"
 
+    def read_active(self, relative: str) -> bytes:
+        path = self.active_skill / relative
+        if os.name != "nt":
+            return path.read_bytes()
+        return subprocess.run(
+            ["bash", "-lc", f"cat {shlex.quote(bash_path(path))}"],
+            check=True,
+            capture_output=True,
+        ).stdout
+
+    def active_path_exists(self, relative: str = "") -> bool:
+        path = self.active_skill / relative
+        if os.name != "nt":
+            return path.exists()
+        result = subprocess.run(
+            ["bash", "-lc", f"test -e {shlex.quote(bash_path(path))}"],
+            capture_output=True,
+        )
+        return result.returncode == 0
+
     def test_setup_is_idempotent_with_paths_containing_spaces(self) -> None:
         first = self.run_installer(SETUP_SCRIPT, self.good_sha)
         self.assertEqual(0, first.returncode, first.stdout + first.stderr)
-        first_skill = (self.active_skill / "SKILL.md").read_bytes()
+        first_skill = self.read_active("SKILL.md")
 
         second = self.run_installer(SETUP_SCRIPT, self.good_sha)
         self.assertEqual(0, second.returncode, second.stdout + second.stderr)
-        self.assertEqual(first_skill, (self.active_skill / "SKILL.md").read_bytes())
+        self.assertEqual(first_skill, self.read_active("SKILL.md"))
 
     def test_setup_rejects_unrelated_existing_target(self) -> None:
         self.active_skill.mkdir(parents=True)
@@ -138,7 +158,7 @@ class CloudInstallerTests(unittest.TestCase):
     def test_failed_maintenance_preserves_active_install(self) -> None:
         setup = self.run_installer(SETUP_SCRIPT, self.good_sha)
         self.assertEqual(0, setup.returncode, setup.stdout + setup.stderr)
-        active_before = (self.active_skill / "SKILL.md").read_bytes()
+        active_before = self.read_active("SKILL.md")
 
         required_reference = self.fixture_skill / "references" / "user-guide-spec.md"
         required_reference.unlink()
@@ -149,15 +169,15 @@ class CloudInstallerTests(unittest.TestCase):
         update = self.run_installer(MAINTENANCE_SCRIPT, bad_sha)
 
         self.assertNotEqual(0, update.returncode, update.stdout + update.stderr)
-        self.assertEqual(active_before, (self.active_skill / "SKILL.md").read_bytes())
-        self.assertTrue((self.active_skill / "references" / "user-guide-spec.md").is_file())
+        self.assertEqual(active_before, self.read_active("SKILL.md"))
+        self.assertTrue(self.active_path_exists("references/user-guide-spec.md"))
 
     def test_production_ref_must_be_a_full_commit_sha(self) -> None:
         for ref in (None, self.good_sha[:12], "main", "v1.0.0", "f" * 40):
             with self.subTest(ref=ref):
                 result = self.run_installer(SETUP_SCRIPT, ref)
                 self.assertNotEqual(0, result.returncode, result.stdout + result.stderr)
-                self.assertFalse(self.active_skill.exists())
+                self.assertFalse(self.active_path_exists())
 
 
 if __name__ == "__main__":
