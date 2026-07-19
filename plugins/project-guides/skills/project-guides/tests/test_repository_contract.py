@@ -190,6 +190,7 @@ class RepositoryContractTests(unittest.TestCase):
         ]
         for script in scripts:
             self.assertTrue(script.is_file(), f"missing cloud script: {script.relative_to(ROOT)}")
+            self.assertNotIn(b"\r\n", script.read_bytes(), f"{script.relative_to(ROOT)} must use LF")
         result = subprocess.run(
             ["bash", "-n", *(bash_path(script) for script in scripts)],
             cwd=ROOT,
