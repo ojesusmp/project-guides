@@ -107,7 +107,7 @@ The reviewer must complete this section before the Claude-era active files are d
 
 **Reviewer:** OMX team leader (boundary authorization)
 
-**Review commit:** `b4d51c1`
+**Review commit:** `2961c50`
 
 **Date:** 2026-07-19
 
