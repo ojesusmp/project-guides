@@ -1,18 +1,35 @@
 {
   "name": "project-guides",
-  "version": "0.1.0",
-  "description": "Project Guides plugin",
+  "version": "2.0.0",
+  "description": "Create verified operator and developer documentation from a real repository.",
   "author": {
-    "name": "Local developer"
+    "name": "ojesusmp",
+    "url": "https://github.com/ojesusmp"
   },
+  "homepage": "https://github.com/ojesusmp/project-guides#readme",
+  "repository": "https://github.com/ojesusmp/project-guides",
+  "license": "MIT",
+  "keywords": [
+    "documentation",
+    "developer-guide",
+    "user-guide"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Project Guides",
-    "shortDescription": "Use Project Guides in Codex.",
-    "longDescription": "Project Guides adds a local Codex plugin scaffold.",
-    "developerName": "Local developer",
+    "shortDescription": "Create verified user and developer guides",
+    "longDescription": "Inspect a repository and create a self-contained operator guide, a cited developer index, and optional future-session context.",
+    "developerName": "ojesusmp",
     "category": "Productivity",
-    "capabilities": [],
-    "defaultPrompt": "Help me use Project Guides."
+    "capabilities": [
+      "Repository inspection",
+      "Documentation authoring",
+      "Artifact validation"
+    ],
+    "defaultPrompt": [
+      "Document this project with a user guide and developer index.",
+      "Create a cited developer index for this repository.",
+      "Check whether this project's guides are current."
+    ]
   }
 }

@@ -1,5 +1,21 @@
 # Changelog — project-guides
 
+## 2.0.0 - 2026-07-18 (Codex-first plugin and cloud bootstrap)
+
+- Promoted the Codex workflow from `codex/project-guides` to the canonical plugin skill at
+  `plugins/project-guides/skills/project-guides`; the active Claude implementation is retired only
+  after the parity record in `docs/migration/claude-to-codex-parity.md` is complete.
+- Added a skills-only plugin manifest and repository marketplace. The direct installation URL now
+  points to the canonical plugin skill, eliminating a second editable Codex copy.
+- Added validate-before-activate Codex Cloud setup and maintenance scripts. Production installs
+  require a full commit SHA, reject unrelated existing targets, preserve the prior active install
+  on candidate failure, and keep `main` behind an explicit development-only opt-in.
+- Rewrote the README around Codex installation, invocation, outputs, validation, and a support
+  matrix. Local packaging is validated separately from Work-mode and Codex Cloud smoke claims.
+- Work-mode plugin invocation and Codex Cloud execution remain explicitly pending until a supported
+  workspace and a configured cloud environment ID are available. This migration did not publish a
+  plugin or create or modify a cloud environment.
+
 ## 1.7.0 — 2026-07-15 (design pass: real art direction for the user guide, via a Fable taste phase)
 
 The user guide's visual spec was one thin line ("colored section cards ... clean, modern,

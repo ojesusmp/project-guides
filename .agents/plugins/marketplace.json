@@ -1,7 +1,7 @@
 {
-  "name": "personal",
+  "name": "project-guides",
   "interface": {
-    "displayName": "Personal"
+    "displayName": "Project Guides"
   },
   "plugins": [
     {
