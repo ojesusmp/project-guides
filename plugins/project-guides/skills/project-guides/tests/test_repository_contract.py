@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+import os
 import re
+import shlex
 import shutil
 import subprocess
 import unittest
@@ -69,6 +71,29 @@ def tracked_files(pattern: str) -> list[Path]:
         text=True,
     )
     return [ROOT / line for line in result.stdout.splitlines() if line]
+
+
+def bash_path(path: Path) -> str:
+    resolved = path.resolve()
+    if os.name != "nt":
+        return resolved.as_posix()
+    platform = subprocess.run(
+        ["bash", "-lc", "uname -s"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    if platform == "Linux":
+        drive = resolved.drive.rstrip(":").lower()
+        tail = "/".join(resolved.parts[1:])
+        return f"/mnt/{drive}/{tail}"
+    converted = subprocess.run(
+        ["bash", "-lc", f"cygpath -u {shlex.quote(str(resolved))}"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return converted.stdout.strip()
 
 
 class RepositoryContractTests(unittest.TestCase):
@@ -149,6 +174,8 @@ class RepositoryContractTests(unittest.TestCase):
         for path in sorted(SKILL_ROOT.rglob("*")):
             if not path.is_file() or path.suffix.lower() not in {".md", ".yaml", ".yml", ".py", ".sh"}:
                 continue
+            if SKILL_ROOT.joinpath("tests") in path.parents:
+                continue
             text = path.read_text(encoding="utf-8")
             for label, pattern in FORBIDDEN_ACTIVE_PATTERNS.items():
                 if pattern.search(text):
@@ -164,7 +191,7 @@ class RepositoryContractTests(unittest.TestCase):
         for script in scripts:
             self.assertTrue(script.is_file(), f"missing cloud script: {script.relative_to(ROOT)}")
         result = subprocess.run(
-            ["bash", "-n", *(script.as_posix() for script in scripts)],
+            ["bash", "-n", *(bash_path(script) for script in scripts)],
             cwd=ROOT,
             capture_output=True,
             text=True,

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import shlex
 import shutil
 import subprocess
 import tempfile
@@ -20,6 +21,29 @@ SKILL_ROOT = ROOT / "plugins" / "project-guides" / "skills" / "project-guides"
 CLOUD_ROOT = ROOT / "integrations" / "codex-cloud"
 SETUP_SCRIPT = CLOUD_ROOT / "setup.sh"
 MAINTENANCE_SCRIPT = CLOUD_ROOT / "maintenance.sh"
+
+
+def bash_path(path: Path) -> str:
+    resolved = path.resolve()
+    if os.name != "nt":
+        return resolved.as_posix()
+    platform = subprocess.run(
+        ["bash", "-lc", "uname -s"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    if platform == "Linux":
+        drive = resolved.drive.rstrip(":").lower()
+        tail = "/".join(resolved.parts[1:])
+        return f"/mnt/{drive}/{tail}"
+    converted = subprocess.run(
+        ["bash", "-lc", f"cygpath -u {shlex.quote(str(resolved))}"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return converted.stdout.strip()
 
 
 @unittest.skipUnless(shutil.which("bash") and shutil.which("git"), "bash and git are required")
@@ -66,12 +90,13 @@ class CloudInstallerTests(unittest.TestCase):
         environment.update(
             {
                 "HOME": self.home.as_posix(),
-                "PROJECT_GUIDES_REPOSITORY": self.fixture_repository.as_posix(),
-                "PROJECT_GUIDES_CACHE_DIR": self.cache.as_posix(),
-                "PROJECT_GUIDES_SKILLS_DIR": self.skills.as_posix(),
+                "PROJECT_GUIDES_REPOSITORY": bash_path(self.fixture_repository),
+                "PROJECT_GUIDES_CACHE_DIR": bash_path(self.cache),
+                "PROJECT_GUIDES_SKILLS_DIR": bash_path(self.skills),
             }
         )
-        arguments = ["bash", script.as_posix()]
+        environment["HOME"] = bash_path(self.home)
+        arguments = ["bash", bash_path(script)]
         if script == SETUP_SCRIPT:
             if ref is None:
                 environment.pop("PROJECT_GUIDES_COMMIT", None)
