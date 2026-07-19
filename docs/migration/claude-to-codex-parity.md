@@ -19,7 +19,25 @@ This inventory compares the Claude-era root package at revision `297bd49` with t
 | `resources/user-guide-spec.md` | `plugins/project-guides/skills/project-guides/references/user-guide-spec.md` | Retained, including the v1.7 design direction, passive HTML, accessibility, voice, and accuracy rules. |
 | `test/quiz.txt` | `scripts/validate_project_guides.py` and `tests/test_validate_project_guides.py` | Replaced by deterministic validation and unit tests; the Claude CLI quiz is intentionally retired. |
 
-Paths in the evidence column name the pre-migration Codex location (`codex/project-guides/...`) so the comparison remains auditable against revision `297bd49`. After promotion, the same relative files live below `plugins/project-guides/skills/project-guides/`.
+Paths in the evidence column name the pre-migration Codex location (`codex/project-guides/...`) so the comparison remains auditable against revision `297bd49`. Unqualified `references/`, `scripts/`, and `tests/` paths are relative to that directory. After promotion, the same relative files live below `plugins/project-guides/skills/project-guides/`.
+
+## Claude-era evidence map
+
+This map anchors the grouped guarantees below to every active Claude-era source section:
+
+| Claude-era range | Guarantees covered below |
+|---|---|
+| `SKILL.md:12-38` | Default pair, optional primer, applicability, and half-pipeline behavior (rows 1-6). |
+| `SKILL.md:40-59` | Capability roles, scaling, and the old provider/machine mappings (rows 16-19). |
+| `SKILL.md:61-77` | Untrusted-source, secret, passive-content, and trusted-placeholder boundaries (rows 7-10 and 23). |
+| `SKILL.md:79-143` | Scope, coverage, author retries, source verification, rendering, bounded fixes, primer verification, and tracker logging (rows 5-12, 16-20, 27-35). |
+| `SKILL.md:145-183` | Single-artifact execution and staleness fingerprint behavior (rows 2 and 13-15). |
+| `SKILL.md:185-243` | Voice, mechanical HTML checks, render completeness, reduced motion, safe paths, and locked-target handling (rows 23-31). |
+| `SKILL.md:245-278` | Final quality assertions, optional extras, reference authority, and the Claude quiz gate (rows 20-27 and 33-38). |
+| `resources/agent-prompts.md:1-140` | Trusted placeholders, parallel authors, output ownership, design contract, source accuracy, index citations, and optional-primer content (rows 3-4, 7-10, 16-26, and 32). |
+| `resources/developer-index-spec.md:1-68` | Exact identifiers, project-relative paths, secret sanitation, the 13-section outline, citations, and repair budget (rows 9-10 and 20-22). |
+| `resources/user-guide-spec.md:1-108` | Passive/offline format, infographic and design rules, voice, required operator content, accuracy, troubleshooting, and safety (rows 9-10 and 23-31). |
+| `test/quiz.txt` | The provider-specific regression mechanism replaced in row 37. |
 
 ## Parity inventory
 
