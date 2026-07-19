@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic validation for the Codex project-guides skill and its outputs."""
+"""Deterministic validation for the Codex Guides skill and its outputs."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ REQUIRED_FILES = (
     "references/user-guide-spec.md",
     "references/developer-index-spec.md",
     "references/authoring-prompts.md",
-    "scripts/validate_project_guides.py",
+    "scripts/validate_codex_guides.py",
 )
 
 FORBIDDEN_PACKAGE_PATTERNS = {
@@ -58,7 +58,7 @@ ABSOLUTE_USER_PATH_PATTERN = re.compile(
     r"|/(?:home|Users)/(?!<)[^/\s]+/)",
     re.IGNORECASE,
 )
-FINGERPRINT_PATTERN = re.compile(r"project-guides-fingerprint\s*:", re.IGNORECASE)
+FINGERPRINT_PATTERN = re.compile(r"codex-guides-fingerprint\s*:", re.IGNORECASE)
 
 
 class PassiveHTMLParser(HTMLParser):
@@ -162,8 +162,8 @@ def validate_package(root: Path) -> list[str]:
         for key in ("display_name:", "short_description:", "default_prompt:"):
             if key not in metadata_text:
                 errors.append(f"agents/openai.yaml is missing {key}")
-        if "$project-guides" not in metadata_text:
-            errors.append("agents/openai.yaml default_prompt must mention $project-guides")
+        if "$codex-guides" not in metadata_text:
+            errors.append("agents/openai.yaml default_prompt must mention $codex-guides")
 
     return errors
 
@@ -200,7 +200,7 @@ def validate_html(path: Path) -> list[str]:
     if not re.search(r"safety|limits?|security|privacy|seguridad|l[ií]mites?|privacidad", text, re.IGNORECASE):
         errors.append("safety and limits section is not identifiable")
     if not FINGERPRINT_PATTERN.search(text):
-        errors.append("project-guides fingerprint comment is missing")
+        errors.append("codex-guides fingerprint comment is missing")
     if SECRET_PATTERN.search(text):
         errors.append("possible live secret found")
     if ABSOLUTE_USER_PATH_PATTERN.search(text):
@@ -211,7 +211,7 @@ def validate_html(path: Path) -> list[str]:
 def validate_index(path: Path) -> list[str]:
     errors: list[str] = []
     text = path.read_text(encoding="utf-8")
-    if not re.search(r"Project-guides fingerprint\s*:", text, re.IGNORECASE):
+    if not re.search(r"Codex-guides fingerprint\s*:", text, re.IGNORECASE):
         errors.append("developer-index fingerprint is missing")
     if SECRET_PATTERN.search(text):
         errors.append("possible live secret found")

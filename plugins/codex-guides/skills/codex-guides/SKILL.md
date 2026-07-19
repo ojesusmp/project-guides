@@ -1,9 +1,9 @@
 ---
-name: project-guides
+name: codex-guides
 description: "Create verified project documentation from the real repository: a self-contained visual GUIDE.html for operators, a cited DEVELOPER-INDEX.md for maintainers, and optionally AI-CONTEXT.md. Use when Codex is asked to document a project, create a user guide, build a developer index or technical reference, generate the two companion guides, or prepare durable context for a future coding session."
 ---
 
-# Project Guides
+# Codex Guides
 
 Produce documentation that is accurate enough for an operator to use and a new maintainer to modify the project without prior context.
 
@@ -57,7 +57,7 @@ generated=<UTC date>; commit=<short commit>|non-git|git-unavailable[-dirty]; sou
 Resolve `{SKILL_DIR}` as the directory containing this loaded `SKILL.md`, then compute the count, byte total, and deterministic hash with:
 
 ```text
-python "{SKILL_DIR}/scripts/validate_project_guides.py" --source-root "{PROJECT_ROOT}" --fingerprint <relative source files...>
+python "{SKILL_DIR}/scripts/validate_codex_guides.py" --source-root "{PROJECT_ROOT}" --fingerprint <relative source files...>
 ```
 
 The hash covers the ordered relative source paths and their exact bytes, so equal-size content changes are detected. Determine `-dirty` from repository status. The fingerprint is inert metadata, not executable project content.
@@ -66,9 +66,9 @@ The hash covers the ordered relative source paths and their exact bytes, so equa
 
 When native subagents are available and the project is substantial, start two bounded tasks in parallel:
 
-- Guide author: owns only `{OUTPUT_DIR}/.GUIDE.project-guides.tmp.html` and follows the user-guide specification.
-- Index author: owns only `{OUTPUT_DIR}/.DEVELOPER-INDEX.project-guides.tmp.md` and `{OUTPUT_DIR}/.DEVELOPER-INDEX.project-guides.tmp.citations.txt`, follows the developer-index specification, and returns claim-to-source citations.
-- Context-primer author, when requested: owns only `{OUTPUT_DIR}/.AI-CONTEXT.project-guides.tmp.md`.
+- Guide author: owns only `{OUTPUT_DIR}/.GUIDE.codex-guides.tmp.html` and follows the user-guide specification.
+- Index author: owns only `{OUTPUT_DIR}/.DEVELOPER-INDEX.codex-guides.tmp.md` and `{OUTPUT_DIR}/.DEVELOPER-INDEX.codex-guides.tmp.citations.txt`, follows the developer-index specification, and returns claim-to-source citations.
+- Context-primer author, when requested: owns only `{OUTPUT_DIR}/.AI-CONTEXT.codex-guides.tmp.md`.
 
 Use capability-based roles and inherit the session model. Do not hardcode a model name. Give each subagent the project root, explicit source list, output path, fingerprint, constraints, and the security block from `references/authoring-prompts.md`.
 
@@ -78,16 +78,16 @@ If subagents are unavailable or the project is small, author directly. If an aut
 
 Use a verifier that did not author an artifact when native subagents and capacity are available. Otherwise verify directly.
 
-For staged `.DEVELOPER-INDEX.project-guides.tmp.md`:
+For staged `.DEVELOPER-INDEX.codex-guides.tmp.md`:
 
 1. Check every returned `path:line` citation against the current source.
 2. Spot-check at least one behavior claim and one validation or failure-path claim.
 3. Confirm every applicable required section exists.
 4. Scan for possible secrets and absolute user-specific paths.
 
-For staged `.GUIDE.project-guides.tmp.html`:
+For staged `.GUIDE.codex-guides.tmp.html`:
 
-1. Resolve `{SKILL_DIR}` as the directory containing this loaded `SKILL.md`, then run `python "{SKILL_DIR}/scripts/validate_project_guides.py" --html <path>`.
+1. Resolve `{SKILL_DIR}` as the directory containing this loaded `SKILL.md`, then run `python "{SKILL_DIR}/scripts/validate_codex_guides.py" --html <path>`.
 2. Spot-check commands, paths, statuses, outputs, and limitations against source.
 3. Confirm the troubleshooting table and safety/limits section exist.
 4. Confirm it is one self-contained passive HTML file.
@@ -98,7 +98,7 @@ One fix cycle means repairing all currently known failures and re-running the re
 
 ### 5. Render The User Guide
 
-Open or render staged `.GUIDE.project-guides.tmp.html` using the available browser or visual-inspection tool. Its `.html` suffix is intentional so browsers render the exact staged bytes rather than displaying them as text. Never render the old final `GUIDE.html` as evidence for a replacement. Inspect desktop and narrow/mobile widths, the full page including the footer, text fit, contrast, tables, and print behavior.
+Open or render staged `.GUIDE.codex-guides.tmp.html` using the available browser or visual-inspection tool. Its `.html` suffix is intentional so browsers render the exact staged bytes rather than displaying them as text. Never render the old final `GUIDE.html` as evidence for a replacement. Inspect desktop and narrow/mobile widths, the full page including the footer, text fit, contrast, tables, and print behavior.
 
 - Prefer the in-app browser for local HTML or a temporary local server when available.
 - Otherwise use an installed Chromium-family browser in headless mode and inspect the PNG.
@@ -113,7 +113,7 @@ After every requested staged artifact passes, promote it to its final filename w
 Run the bundled package check after modifying this skill:
 
 ```text
-python "{SKILL_DIR}/scripts/validate_project_guides.py"
+python "{SKILL_DIR}/scripts/validate_codex_guides.py"
 ```
 
 Do not resolve that command relative to the target project. The validator belongs to the installed skill and discovers its package root from its own file location.

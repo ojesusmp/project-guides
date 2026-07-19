@@ -18,10 +18,11 @@ def find_repository_root() -> Path:
 
 
 ROOT = find_repository_root()
-PLUGIN_ROOT = ROOT / "plugins" / "project-guides"
-SKILL_ROOT = PLUGIN_ROOT / "skills" / "project-guides"
+PLUGIN_ROOT = ROOT / "plugins" / "codex-guides"
+SKILL_ROOT = PLUGIN_ROOT / "skills" / "codex-guides"
 MANIFEST_PATH = PLUGIN_ROOT / ".codex-plugin" / "plugin.json"
 MARKETPLACE_PATH = ROOT / ".agents" / "plugins" / "marketplace.json"
+REPOSITORY_URL = "https://github.com/ojesusmp/codex-guides"
 
 SEMVER_PATTERN = re.compile(
     r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)"
@@ -29,7 +30,7 @@ SEMVER_PATTERN = re.compile(
     r"(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$"
 )
 FRONTMATTER_NAME_PATTERN = re.compile(
-    r"\A---\r?\n(?:(?!\r?\n---\r?\n).)*?^name:\s*['\"]?project-guides['\"]?\s*$",
+    r"\A---\r?\n(?:(?!\r?\n---\r?\n).)*?^name:\s*['\"]?codex-guides['\"]?\s*$",
     re.MULTILINE | re.DOTALL,
 )
 FORBIDDEN_ACTIVE_PATTERNS = {
@@ -53,7 +54,7 @@ FORBIDDEN_ACTIVE_PATTERNS = {
     ),
 }
 PLACEHOLDER_PATTERN = re.compile(
-    r"\b(?:TODO|TBD|Local developer|plugin scaffold|Help me use Project Guides)\b",
+    r"\b(?:TODO|TBD|Local developer|plugin scaffold|Help me use Codex Guides)\b",
     re.IGNORECASE,
 )
 
@@ -119,7 +120,8 @@ class RepositoryContractTests(unittest.TestCase):
                 resolved_skills.append(candidate)
         self.assertIn(SKILL_ROOT.resolve(), resolved_skills)
         self.assertTrue((SKILL_ROOT / "SKILL.md").is_file())
-        self.assertIsNotNone(manifest.get("repository"))
+        self.assertEqual(REPOSITORY_URL, manifest.get("repository"))
+        self.assertEqual(f"{REPOSITORY_URL}#readme", manifest.get("homepage"))
 
         serialized = json.dumps(manifest, sort_keys=True)
         self.assertIsNone(PLACEHOLDER_PATTERN.search(serialized), serialized)
@@ -129,7 +131,7 @@ class RepositoryContractTests(unittest.TestCase):
         plugins = marketplace.get("plugins")
         self.assertIsInstance(plugins, list)
         entry = next(
-            (item for item in plugins or [] if isinstance(item, dict) and item.get("name") == "project-guides"),
+            (item for item in plugins or [] if isinstance(item, dict) and item.get("name") == "codex-guides"),
             None,
         )
         self.assertIsNotNone(entry)
@@ -153,13 +155,26 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertTrue(entry.get("category"))
         self.assertIsNone(PLACEHOLDER_PATTERN.search(json.dumps(entry, sort_keys=True)))
 
-    def test_only_one_active_project_guides_skill_is_tracked(self) -> None:
+    def test_only_one_active_codex_guides_skill_is_tracked(self) -> None:
         declarations: list[Path] = []
         for path in tracked_files("*SKILL.md"):
             text = path.read_text(encoding="utf-8")
             if FRONTMATTER_NAME_PATTERN.search(text):
                 declarations.append(path.resolve())
         self.assertEqual([SKILL_ROOT.joinpath("SKILL.md").resolve()], declarations)
+
+    def test_no_active_claude_package_is_tracked(self) -> None:
+        forbidden_patterns = (".claude/**", "**/.claude-plugin/**", "claude/**", "plugins/*claude*/**")
+        tracked = {
+            path.relative_to(ROOT).as_posix()
+            for pattern in forbidden_patterns
+            for path in tracked_files(pattern)
+        }
+        self.assertEqual(set(), tracked)
+
+        readme = ROOT.joinpath("README.md").read_text(encoding="utf-8")
+        self.assertIn("OpenAI Codex only", readme)
+        self.assertIn("Do not install it in", readme)
 
     def test_legacy_codex_package_has_no_tracked_files(self) -> None:
         self.assertEqual([], tracked_files("codex/project-guides/**"))
@@ -207,7 +222,7 @@ class RepositoryContractTests(unittest.TestCase):
         text = "\n".join(script.read_text(encoding="utf-8") for script in scripts)
         self.assertNotRegex(text, r"(?:curl|wget)[^\n|]*\|\s*(?:ba)?sh\b")
         self.assertNotRegex(text, r"git\s+(?:clone|checkout|switch)[^\n]*(?:\bmain\b|\bmaster\b)")
-        self.assertIn("PROJECT_GUIDES_COMMIT", text)
+        self.assertIn("CODEX_GUIDES_COMMIT", text)
 
 
 if __name__ == "__main__":

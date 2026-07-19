@@ -54,7 +54,7 @@ Use plain, direct, human language. Avoid em dashes, arrows as bullets, emoji bul
 11. An HTML fingerprint comment in this exact shape:
 
 ```html
-<!-- project-guides-fingerprint: {FINGERPRINT} -->
+<!-- codex-guides-fingerprint: {FINGERPRINT} -->
 ```
 
 Omit a money/value workflow only when the project has none. For headless projects, replace the visual interface tour with commands, files, logs, and process lifecycle.

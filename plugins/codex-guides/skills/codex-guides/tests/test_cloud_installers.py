@@ -17,7 +17,7 @@ def find_repository_root() -> Path:
 
 
 ROOT = find_repository_root()
-SKILL_ROOT = ROOT / "plugins" / "project-guides" / "skills" / "project-guides"
+SKILL_ROOT = ROOT / "plugins" / "codex-guides" / "skills" / "codex-guides"
 CLOUD_ROOT = ROOT / "integrations" / "codex-cloud"
 SETUP_SCRIPT = CLOUD_ROOT / "setup.sh"
 MAINTENANCE_SCRIPT = CLOUD_ROOT / "maintenance.sh"
@@ -57,7 +57,7 @@ class CloudInstallerTests(unittest.TestCase):
         self.cache = self.root / "cache directory"
         self.skills = self.home / ".agents" / "skills"
         self.fixture_skill = (
-            self.fixture_repository / "plugins" / "project-guides" / "skills" / "project-guides"
+            self.fixture_repository / "plugins" / "codex-guides" / "skills" / "codex-guides"
         )
 
         shutil.copytree(
@@ -66,8 +66,8 @@ class CloudInstallerTests(unittest.TestCase):
             ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
         )
         self.git("init")
-        self.git("config", "user.email", "project-guides-tests@example.invalid")
-        self.git("config", "user.name", "Project Guides Tests")
+        self.git("config", "user.email", "codex-guides-tests@example.invalid")
+        self.git("config", "user.name", "Codex Guides Tests")
         self.git("add", ".")
         self.git("commit", "-m", "valid fixture")
         self.good_sha = self.git("rev-parse", "HEAD").stdout.strip()
@@ -88,14 +88,14 @@ class CloudInstallerTests(unittest.TestCase):
     ) -> subprocess.CompletedProcess[str]:
         environment = {
             "HOME": bash_path(self.home),
-            "PROJECT_GUIDES_REPOSITORY": bash_path(self.fixture_repository),
-            "PROJECT_GUIDES_CACHE_DIR": bash_path(self.cache),
-            "PROJECT_GUIDES_SKILLS_DIR": bash_path(self.skills),
+            "CODEX_GUIDES_REPOSITORY": bash_path(self.fixture_repository),
+            "CODEX_GUIDES_CACHE_DIR": bash_path(self.cache),
+            "CODEX_GUIDES_SKILLS_DIR": bash_path(self.skills),
         }
         arguments = [bash_path(script)]
         if script == SETUP_SCRIPT:
             if ref is not None:
-                environment["PROJECT_GUIDES_COMMIT"] = ref
+                environment["CODEX_GUIDES_COMMIT"] = ref
         else:
             if ref is not None:
                 arguments.append(ref)
@@ -114,7 +114,7 @@ class CloudInstallerTests(unittest.TestCase):
 
     @property
     def active_skill(self) -> Path:
-        return self.skills / "project-guides"
+        return self.skills / "codex-guides"
 
     def read_active(self, relative: str) -> bytes:
         path = self.active_skill / relative

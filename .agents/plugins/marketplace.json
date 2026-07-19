@@ -1,14 +1,14 @@
 {
-  "name": "project-guides",
+  "name": "codex-guides",
   "interface": {
-    "displayName": "Project Guides"
+    "displayName": "Codex Guides"
   },
   "plugins": [
     {
-      "name": "project-guides",
+      "name": "codex-guides",
       "source": {
         "source": "local",
-        "path": "./plugins/project-guides"
+        "path": "./plugins/codex-guides"
       },
       "policy": {
         "installation": "AVAILABLE",

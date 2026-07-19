@@ -6,8 +6,8 @@ import unittest
 from pathlib import Path
 
 
-SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "validate_project_guides.py"
-SPEC = importlib.util.spec_from_file_location("project_guides_validator", SCRIPT)
+SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "validate_codex_guides.py"
+SPEC = importlib.util.spec_from_file_location("codex_guides_validator", SCRIPT)
 assert SPEC and SPEC.loader
 VALIDATOR = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(VALIDATOR)
@@ -18,7 +18,7 @@ VALID_HTML = """<!doctype html>
 <body><main><h1>Tool guide</h1><section><h2>Problem solving</h2>
 <table><tr><th>Problem</th><th>Fix</th></tr><tr><td>No output</td><td>Read the log.</td></tr></table>
 </section><section><h2>Safety and limits</h2><p>Keep credentials private.</p></section></main>
-<!-- project-guides-fingerprint: generated=2026-01-01; commit=abc123; sources=1; bytes=10 -->
+<!-- codex-guides-fingerprint: generated=2026-01-01; commit=abc123; sources=1; bytes=10 -->
 </body></html>"""
 
 

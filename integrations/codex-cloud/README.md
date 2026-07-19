@@ -10,19 +10,19 @@ Choose and review a repository commit, then record its complete 40-character SHA
 environment setup command:
 
 ```bash
-export PROJECT_GUIDES_COMMIT=0123456789abcdef0123456789abcdef01234567
+export CODEX_GUIDES_COMMIT=0123456789abcdef0123456789abcdef01234567
 bash integrations/codex-cloud/setup.sh
 ```
 
 `setup.sh` stages that exact commit, runs the bundled package validator, and activates the validated
-skill at `$HOME/.agents/skills/project-guides`. Activation uses an installer-owned symlink and does
+skill at `$HOME/.agents/skills/codex-guides`. Activation uses an installer-owned symlink and does
 not replace an unrelated file or directory. A failed fetch or validation leaves the previous active
 installation untouched. Re-running setup for the same commit validates the active copy and exits
 successfully.
 
-The default source is `https://github.com/ojesusmp/project-guides.git`. Set
-`PROJECT_GUIDES_REPOSITORY` only when testing a trusted fork. Set `PROJECT_GUIDES_CACHE_DIR` or
-`PROJECT_GUIDES_SKILLS_DIR` when the environment requires different cache or discovery locations.
+The default source is `https://github.com/ojesusmp/codex-guides.git`. Set
+`CODEX_GUIDES_REPOSITORY` only when testing a trusted fork. Set `CODEX_GUIDES_CACHE_DIR` or
+`CODEX_GUIDES_SKILLS_DIR` when the environment requires different cache or discovery locations.
 
 ## Maintenance
 
@@ -36,7 +36,7 @@ Using a moving branch is unsafe for production. For an explicitly temporary deve
 `main` may be resolved and recorded as a full SHA with:
 
 ```bash
-PROJECT_GUIDES_ALLOW_DEVELOPMENT_REF=1 \
+CODEX_GUIDES_ALLOW_DEVELOPMENT_REF=1 \
   bash integrations/codex-cloud/maintenance.sh main
 ```
 
@@ -46,7 +46,7 @@ Start a fresh task after setup, disable agent internet, and use this prompt agai
 repository:
 
 ```text
-Use $project-guides to create only docs/DEVELOPER-INDEX.md. Verify every citation and report the
+Use $codex-guides to create only docs/DEVELOPER-INDEX.md. Verify every citation and report the
 source fingerprint and all skipped checks.
 ```
 

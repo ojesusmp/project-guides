@@ -1,13 +1,13 @@
 {
-  "name": "project-guides",
-  "version": "2.0.0",
-  "description": "Create verified operator and developer documentation from a real repository.",
+  "name": "codex-guides",
+  "version": "3.0.0",
+  "description": "OpenAI Codex plugin that creates verified operator and developer documentation from a real repository.",
   "author": {
     "name": "ojesusmp",
     "url": "https://github.com/ojesusmp"
   },
-  "homepage": "https://github.com/ojesusmp/project-guides#readme",
-  "repository": "https://github.com/ojesusmp/project-guides",
+  "homepage": "https://github.com/ojesusmp/codex-guides#readme",
+  "repository": "https://github.com/ojesusmp/codex-guides",
   "license": "MIT",
   "keywords": [
     "documentation",
@@ -16,7 +16,7 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Project Guides",
+    "displayName": "Codex Guides",
     "shortDescription": "Create verified user and developer guides",
     "longDescription": "Inspect a repository and create a self-contained operator guide, a cited developer index, and optional future-session context.",
     "developerName": "ojesusmp",

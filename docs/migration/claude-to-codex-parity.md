@@ -5,7 +5,7 @@
 This inventory compares the Claude-era root package at revision `297bd49` with the Codex-native package that is being promoted to the canonical plugin skill.
 
 - **Inventory status:** complete.
-- **Canonical target:** `plugins/project-guides/skills/project-guides/` (migrated from `codex/project-guides/`).
+- **Canonical target:** `plugins/codex-guides/skills/codex-guides/` (migrated from `codex/project-guides/`).
 - **Deletion gate:** do not remove the root `SKILL.md`, `resources/`, or `test/quiz.txt` until a reviewer records sign-off in the final section of this document.
 - **Interpretation:** "retained" means the behavior remains required, not that the old wording or provider-specific mechanism remains.
 
@@ -13,13 +13,13 @@ This inventory compares the Claude-era root package at revision `297bd49` with t
 
 | Claude-era source | Canonical Codex destination | Disposition |
 |---|---|---|
-| `SKILL.md` | `plugins/project-guides/skills/project-guides/SKILL.md` | Rewritten for Codex while retaining the artifact, safety, verification, and bounded-repair contracts. |
-| `resources/agent-prompts.md` | `plugins/project-guides/skills/project-guides/references/authoring-prompts.md` | Condensed into capability-based, staged-file prompts with the same trust boundary. |
-| `resources/developer-index-spec.md` | `plugins/project-guides/skills/project-guides/references/developer-index-spec.md` | Retained with a stronger citation and failure-behavior contract. |
-| `resources/user-guide-spec.md` | `plugins/project-guides/skills/project-guides/references/user-guide-spec.md` | Retained, including the v1.7 design direction, passive HTML, accessibility, voice, and accuracy rules. |
+| `SKILL.md` | `plugins/codex-guides/skills/codex-guides/SKILL.md` | Rewritten for Codex while retaining the artifact, safety, verification, and bounded-repair contracts. |
+| `resources/agent-prompts.md` | `plugins/codex-guides/skills/codex-guides/references/authoring-prompts.md` | Condensed into capability-based, staged-file prompts with the same trust boundary. |
+| `resources/developer-index-spec.md` | `plugins/codex-guides/skills/codex-guides/references/developer-index-spec.md` | Retained with a stronger citation and failure-behavior contract. |
+| `resources/user-guide-spec.md` | `plugins/codex-guides/skills/codex-guides/references/user-guide-spec.md` | Retained, including the v1.7 design direction, passive HTML, accessibility, voice, and accuracy rules. |
 | `test/quiz.txt` | `scripts/validate_project_guides.py` and `tests/test_validate_project_guides.py` | Replaced by deterministic validation and unit tests; the Claude CLI quiz is intentionally retired. |
 
-Paths in the evidence column name the pre-migration Codex location (`codex/project-guides/...`) so the comparison remains auditable against revision `297bd49`. Unqualified `references/`, `scripts/`, and `tests/` paths are relative to that directory. After promotion, the same relative files live below `plugins/project-guides/skills/project-guides/`.
+Paths in the evidence column name the pre-migration Codex location (`codex/project-guides/...`) so the comparison remains auditable against revision `297bd49`. Unqualified `references/`, `scripts/`, and `tests/` paths are relative to that directory. After promotion, the same relative files live below `plugins/codex-guides/skills/codex-guides/`.
 
 ## Claude-era evidence map
 
@@ -102,7 +102,7 @@ The reviewer must complete this section before the Claude-era active files are d
 - [x] Every root `SKILL.md` guarantee is represented above as retained, changed, replaced, or intentionally dropped.
 - [x] Every behavior in `resources/agent-prompts.md`, `resources/developer-index-spec.md`, and `resources/user-guide-spec.md` has a canonical destination or an explicit removal rationale.
 - [x] The canonical package validator and all migrated unit tests pass.
-- [x] Exactly one tracked `SKILL.md` declares `name: project-guides` after migration.
+- [x] Exactly one tracked `SKILL.md` declares `name: codex-guides` after migration.
 - [x] Root `SKILL.md`, `resources/`, and `test/quiz.txt` are removed only after this checklist is signed.
 
 **Reviewer:** OMX team leader (boundary authorization)

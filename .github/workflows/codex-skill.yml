@@ -3,14 +3,14 @@ name: Codex skill validation
 on:
   push:
     paths:
-      - "plugins/project-guides/**"
+      - "plugins/codex-guides/**"
       - ".agents/plugins/marketplace.json"
       - "integrations/codex-cloud/**"
       - "README.md"
       - ".github/workflows/codex-skill.yml"
   pull_request:
     paths:
-      - "plugins/project-guides/**"
+      - "plugins/codex-guides/**"
       - ".agents/plugins/marketplace.json"
       - "integrations/codex-cloud/**"
       - "README.md"
@@ -36,14 +36,14 @@ jobs:
       - name: Check Python syntax
         run: >-
           python -m compileall -q
-          plugins/project-guides/skills/project-guides/scripts
-          plugins/project-guides/skills/project-guides/tests
+          plugins/codex-guides/skills/codex-guides/scripts
+          plugins/codex-guides/skills/codex-guides/tests
       - name: Validate skill package
-        run: python plugins/project-guides/skills/project-guides/scripts/validate_project_guides.py
+        run: python plugins/codex-guides/skills/codex-guides/scripts/validate_codex_guides.py
       - name: Check cloud script syntax
         run: bash -n integrations/codex-cloud/setup.sh integrations/codex-cloud/maintenance.sh
       - name: Run regression suite
         run: >-
           python -m unittest discover
-          -s plugins/project-guides/skills/project-guides/tests
+          -s plugins/codex-guides/skills/codex-guides/tests
           -v

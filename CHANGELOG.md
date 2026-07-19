@@ -1,4 +1,13 @@
-# Changelog — project-guides
+# Changelog — codex-guides
+
+## 3.0.0 - 2026-07-19 (provider-safe rename)
+
+- Renamed the OpenAI Codex repository, plugin, skill, and invocation to `codex-guides`.
+- Renamed the canonical install path to `~/.codex/skills/codex-guides` and the Codex Cloud
+  environment variables from `PROJECT_GUIDES_*` to `CODEX_GUIDES_*`.
+- Added an explicit boundary against installing the Codex package in Claude skill locations.
+- Renamed the deterministic validator to `validate_codex_guides.py` and updated all package,
+  integration, workflow, and regression references.
 
 ## 2.0.0 - 2026-07-18 (Codex-first plugin and cloud bootstrap)
 

@@ -28,7 +28,7 @@ Create `DEVELOPER-INDEX.md` as durable technical context for a maintainer or fut
 13. **Durable-context footer:** companion artifacts and the fingerprint:
 
 ```text
-Project-guides fingerprint: {FINGERPRINT}
+Codex-guides fingerprint: {FINGERPRINT}
 ```
 
 Drop a section only when the project genuinely lacks that surface, and name the omission in the delivery summary. Never fabricate a surface to satisfy the outline.
