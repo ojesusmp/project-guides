@@ -86,30 +86,28 @@ class CloudInstallerTests(unittest.TestCase):
         script: Path,
         ref: str | None,
     ) -> subprocess.CompletedProcess[str]:
-        environment = os.environ.copy()
-        environment.update(
-            {
-                "HOME": self.home.as_posix(),
-                "PROJECT_GUIDES_REPOSITORY": bash_path(self.fixture_repository),
-                "PROJECT_GUIDES_CACHE_DIR": bash_path(self.cache),
-                "PROJECT_GUIDES_SKILLS_DIR": bash_path(self.skills),
-            }
-        )
-        environment["HOME"] = bash_path(self.home)
-        arguments = ["bash", bash_path(script)]
+        environment = {
+            "HOME": bash_path(self.home),
+            "PROJECT_GUIDES_REPOSITORY": bash_path(self.fixture_repository),
+            "PROJECT_GUIDES_CACHE_DIR": bash_path(self.cache),
+            "PROJECT_GUIDES_SKILLS_DIR": bash_path(self.skills),
+        }
+        arguments = [bash_path(script)]
         if script == SETUP_SCRIPT:
-            if ref is None:
-                environment.pop("PROJECT_GUIDES_COMMIT", None)
-            else:
+            if ref is not None:
                 environment["PROJECT_GUIDES_COMMIT"] = ref
         else:
-            environment.pop("PROJECT_GUIDES_COMMIT", None)
             if ref is not None:
                 arguments.append(ref)
+        assignments = " ".join(
+            f"{name}={shlex.quote(value)}" for name, value in sorted(environment.items())
+        )
+        command = " ".join(
+            ["env", assignments, "bash", *(shlex.quote(argument) for argument in arguments)]
+        )
         return subprocess.run(
-            arguments,
+            ["bash", "-lc", command],
             cwd=ROOT,
-            env=environment,
             capture_output=True,
             text=True,
         )
