@@ -174,7 +174,7 @@ class RepositoryContractTests(unittest.TestCase):
         text = "\n".join(script.read_text(encoding="utf-8") for script in scripts)
         self.assertNotRegex(text, r"(?:curl|wget)[^\n|]*\|\s*(?:ba)?sh\b")
         self.assertNotRegex(text, r"git\s+(?:clone|checkout|switch)[^\n]*(?:\bmain\b|\bmaster\b)")
-        self.assertIn("PROJECT_GUIDES_REF", text)
+        self.assertIn("PROJECT_GUIDES_COMMIT", text)
 
 
 if __name__ == "__main__":

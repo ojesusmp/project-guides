@@ -71,12 +71,18 @@ class CloudInstallerTests(unittest.TestCase):
                 "PROJECT_GUIDES_SKILLS_DIR": self.skills.as_posix(),
             }
         )
-        if ref is None:
-            environment.pop("PROJECT_GUIDES_REF", None)
+        arguments = ["bash", script.as_posix()]
+        if script == SETUP_SCRIPT:
+            if ref is None:
+                environment.pop("PROJECT_GUIDES_COMMIT", None)
+            else:
+                environment["PROJECT_GUIDES_COMMIT"] = ref
         else:
-            environment["PROJECT_GUIDES_REF"] = ref
+            environment.pop("PROJECT_GUIDES_COMMIT", None)
+            if ref is not None:
+                arguments.append(ref)
         return subprocess.run(
-            ["bash", script.as_posix()],
+            arguments,
             cwd=ROOT,
             env=environment,
             capture_output=True,
