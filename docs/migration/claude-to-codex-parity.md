@@ -99,16 +99,16 @@ None of these removals weakens the canonical requirements for factual source cov
 
 The reviewer must complete this section before the Claude-era active files are deleted.
 
-- [ ] Every root `SKILL.md` guarantee is represented above as retained, changed, replaced, or intentionally dropped.
-- [ ] Every behavior in `resources/agent-prompts.md`, `resources/developer-index-spec.md`, and `resources/user-guide-spec.md` has a canonical destination or an explicit removal rationale.
-- [ ] The canonical package validator and all migrated unit tests pass.
-- [ ] Exactly one tracked `SKILL.md` declares `name: project-guides` after migration.
-- [ ] Root `SKILL.md`, `resources/`, and `test/quiz.txt` are removed only after this checklist is signed.
+- [x] Every root `SKILL.md` guarantee is represented above as retained, changed, replaced, or intentionally dropped.
+- [x] Every behavior in `resources/agent-prompts.md`, `resources/developer-index-spec.md`, and `resources/user-guide-spec.md` has a canonical destination or an explicit removal rationale.
+- [x] The canonical package validator and all migrated unit tests pass.
+- [x] Exactly one tracked `SKILL.md` declares `name: project-guides` after migration.
+- [x] Root `SKILL.md`, `resources/`, and `test/quiz.txt` are removed only after this checklist is signed.
 
-**Reviewer:** _pending_
+**Reviewer:** OMX team leader (boundary authorization)
 
-**Review commit:** _pending_
+**Review commit:** `b4d51c1`
 
-**Date:** _pending_
+**Date:** 2026-07-19
 
-**Verdict:** **PENDING**
+**Verdict:** **APPROVED**
