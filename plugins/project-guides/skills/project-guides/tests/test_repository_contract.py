@@ -139,6 +139,11 @@ class RepositoryContractTests(unittest.TestCase):
     def test_legacy_codex_package_has_no_tracked_files(self) -> None:
         self.assertEqual([], tracked_files("codex/project-guides/**"))
 
+    def test_temporary_smoke_and_bytecode_artifacts_are_not_tracked(self) -> None:
+        self.assertEqual([], tracked_files(".tmp-cloud-smoke/**"))
+        self.assertEqual([], tracked_files("*__pycache__/*"))
+        self.assertEqual([], tracked_files("*.py[co]"))
+
     def test_active_package_has_no_provider_or_safety_regressions(self) -> None:
         failures: list[str] = []
         for path in sorted(SKILL_ROOT.rglob("*")):
